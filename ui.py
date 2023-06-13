@@ -6,7 +6,7 @@ class PauseResumeButton(ui.Button['PauseResumeButton']):
         self.player = player
 
     async def callback(self, interaction):
-        if self.player:
+        if self.player and self.player.voice_client:
             if self.player.voice_client.is_playing():
                 await interaction.response.send_message('Mise en pause.', ephemeral=True)
                 await self.player.pause_or_resume('pause')
@@ -21,7 +21,7 @@ class SkipButton(ui.Button['SkipButton']):
         self.player = player
 
     async def callback(self, interaction):
-        if self.player:
+        if self.player and self.player.voice_client:
             await self.player.stop_or_skip('skip')
         await interaction.response.send_message('Skip.', ephemeral=True)
 
