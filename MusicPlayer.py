@@ -67,24 +67,28 @@ class MusicPlayer:
             await self.ctx.send('La file d\'attente est pleine.')
 
     def _download(self, url):
-        try:
-            with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
-                info = ydl.extract_info(url, download=False)
-                duration = info.get('duration', 0) / 60
+    try:
+        with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            duration = info.get('duration', 0) / 60
 
-                if duration > 60:
-                    asyncio.run_coroutine_threadsafe(self.ctx.send('La vidéo est trop longue pour être lue.'), self.ctx.bot.loop)
-                    return None
+            if duration > 30:
+                asyncio.run_coroutine_threadsafe(self.ctx.send('La vidéo est trop longue pour être lue.'), self.ctx.bot.loop)
+                return None
 
-                info = ydl.extract_info(url, download=True)
-                file_path = ydl.prepare_filename(info)
-                file_path = file_path.rsplit(".", 1)[0] + ".mp3"
-                self.current_file_path = file_path
+            # S'il s'agit d'une playlist, télécharge la première vidéo
+            if 'entries' in info:
+                info = info['entries'][0]
 
-                return info
-        except Exception as e:
-            asyncio.run_coroutine_threadsafe(self.ctx.send(f'Une erreur s\'est produite: {str(e)}'), self.ctx.bot.loop)
-            return None
+            info = ydl.extract_info(info['webpage_url'], download=True)
+            file_path = ydl.prepare_filename(info)
+            file_path = file_path.rsplit(".", 1)[0] + ".mp3"
+            self.current_file_path = file_path
+
+            return info
+    except Exception as e:
+        asyncio.run_coroutine_threadsafe(self.ctx.send(f'Une erreur s\'est produite: {str(e)}'), self.ctx.bot.loop)
+        return None
 
     async def pause_or_resume(self, action):
         if self.voice_client:
