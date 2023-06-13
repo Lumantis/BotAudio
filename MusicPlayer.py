@@ -33,7 +33,7 @@ class MusicPlayer:
                 await self.ctx.send(f'Lecture en cours : {info["title"]}')
                 
                 # Create and send the soundboard view here
-                view = MusicButtonsView()
+                view = MusicButtonsView(self)
                 await self.ctx.send("Contrôleur de lecture :", view=view)
 
                 # Attendez que la piste se termine avant de continuer
