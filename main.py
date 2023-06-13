@@ -31,6 +31,9 @@ players = {}
 @bot.event
 async def on_ready():
     print('Bot is ready!')
+    # Vérifier si le dossier "playlist" existe, sinon le créer.
+    if not os.path.exists('playlist'):
+        os.makedirs('playlist')
 
 @bot.command()
 async def lire(ctx, url):
