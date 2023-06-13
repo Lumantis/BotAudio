@@ -1,6 +1,7 @@
 import asyncio
 import yt_dlp
 import discord
+import os
 from ui import MusicButtonsView
 
 class MusicPlayer:
@@ -36,8 +37,13 @@ class MusicPlayer:
                 view = MusicButtonsView(self)
                 await self.ctx.send("Contrôleur de lecture :", view=view)
 
-                # Attendez que la piste se termine avant de continuer
+                # Attend que la piste se termine avant de continuer
                 await self.track_end.wait()
+
+                # Suppression du fichier après la fin de la lecture.
+                if os.path.exists(self.current_file_path):
+                    os.remove(self.current_file_path)
+
             else:
                 self.is_playing = False
                 continue
