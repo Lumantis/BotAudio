@@ -3,10 +3,11 @@ import os
 import shutil
 import discord
 import yt_dlp
+from dotenv import load_dotenv
 from discord.ext import commands
 from MusicPlayer import MusicPlayer
 from ui import MusicButtonsView
-from youtube_utils import search_youtube 
+from youtube_utils import search_youtube
 
 intents = discord.Intents.all()
 intents.members = True
@@ -85,4 +86,7 @@ async def on_disconnect():
     shutil.rmtree('playlist')
     os.mkdir('playlist')
 
-bot.run('MTExMTY3MjUyNzc2OTU3MTM2OA.GQH4-b.RbSqMqRu8ESV3XDf8WEjTpr_ji9egG3EKF4wbg')  # Note : le token est fictif
+load_dotenv()
+TOKEN = os.getenv('DISCORD_TOKEN')
+
+bot.run(TOKEN)
