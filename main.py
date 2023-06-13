@@ -6,7 +6,7 @@ import yt_dlp
 from discord.ext import commands
 from MusicPlayer import MusicPlayer
 from ui import MusicButtonsView
-from youtube_utils import search_youtube  # Ceci est votre fichier local youtube_utils.py
+from youtube_utils import search_youtube
 
 intents = discord.Intents.all()
 intents.members = True
