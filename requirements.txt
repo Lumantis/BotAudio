@@ -4,3 +4,4 @@ youtube-search-python
 asyncio
 shutil
 os
+python-dotenv
