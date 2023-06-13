@@ -19,7 +19,7 @@ Ce bot Discord, écrit en Python, permet aux utilisateurs de lire des vidéos Yo
 3. Creez un fichier .env à la racine du projet et ajoutez le token du bot (DISCORD_TOKEN=Le-token-de-votre-bot)
 4. Exécutez `main.py`.
 
-#### Commandes
+#### Commandes Discord
 
 - `/lire [url]`: Le bot rejoint votre canal vocal et commence à lire la vidéo YouTube à l'URL donnée.
 - `/find [nom_de_la_piste]`: Le bot recherche le nom de la piste sur YouTube et joue la première correspondance.
