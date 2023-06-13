@@ -1,30 +1,34 @@
 ![Cover](https://github.com/Lumantis/BotAudio/blob/main/NikouliMakouli.png)
 
-# Nikouli Makouli Bot
+# Nikouli Makouli Audio Bot
 
-Ce bot Discord, écrit en Python, permet aux utilisateurs de lire des vidéos YouTube dans un canal vocal. Il utilise la bibliothèque discord.py ainsi que yt_dlp pour télécharger l'audio des vidéos YouTube.
+Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été développé en Python en utilisant la bibliothèque discord.py.
 
-## Fonctionnalités
+## Caractéristiques
 
-- Jouer de l'audio à partir de vidéos YouTube dans un canal vocal.
-- Mise en pause, reprise, et passage à la prochaine piste.
-- Gestion de la file d'attente de lecture.
-- Nettoyage du dossier de playlist.
-- Déconnexion du canal vocal.
+- Rejoindre et quitter des canaux vocaux
+- Lire de la musique à partir de YouTube
+- Mettre en pause, reprendre et passer des pistes
+- Télécharger et lire des playlists YouTube
 
-### Comment l'installer et l'utiliser
+## Instructions d'installation
 
-1. Clonez ce repo sur votre machine locale.
-2. Installez les dépendances nécessaires (voir REQUIREMENTS.txt).
-3. Creez un fichier .env à la racine du projet et ajoutez le token du bot (DISCORD_TOKEN=Le-token-de-votre-bot)
-4. Exécutez `main.py`.
+1. Clonez ce dépôt
+2. Installez les dépendances en exécutant `pip install -r requirements.txt`
+3. Configurez vos variables d'environnement dans un fichier `.env` (voir exemple ci-dessous)
+4. Lancez le bot avec `python main.py`
 
-#### Commandes Discord
+### Exemple de fichier `.env`
 
-- `/lire [url]`: Le bot rejoint votre canal vocal et commence à lire la vidéo YouTube à l'URL donnée.
-- `/find [nom_de_la_piste]`: Le bot recherche le nom de la piste sur YouTube et joue la première correspondance.
-- `/clean`: Supprime tous les fichiers dans le dossier de la playlist. Nécessite des permissions de gestion des messages.
-- `/quitter`: Le bot quitte le canal vocal.
+DISCORD_TOKEN=Votre-Token-Discord
+
+## Commandes
+
+- `/lire <url>` : Fait lire une piste de musique par le bot à partir de l'URL de YouTube spécifiée
+- `/playlist <url>` : Fait lire une playlist de musique par le bot à partir de l'URL de YouTube spécifiée
+- `/quitter` : Fait quitter le canal vocal au bot
+- `/clean` : Nettoie le dossier de la playlist (nécessite des permissions de gestion des messages)
+- `find <track_name>` : Recherche une piste sur YouTube et la met en file d'attente pour être lue
 
 ##### Note
 
