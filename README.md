@@ -10,20 +10,20 @@ Ce bot Discord, écrit en Python, permet aux utilisateurs de lire des vidéos Yo
 - Nettoyage du dossier de playlist.
 - Déconnexion du canal vocal.
 
-## Comment utiliser
+### Comment l'installer et l'utiliser
 
 1. Clonez ce repo sur votre machine locale.
 2. Installez les dépendances nécessaires (voir REQUIREMENTS.txt).
-3. Assurez-vous de remplacer le token fictif dans `main.py` par le token de votre bot Discord.
+3. Creez un fichier .env à la racine du projet et ajoutez le token du bot (DISCORD_TOKEN=Le-token-de-votre-bot)
 4. Exécutez `main.py`.
 
-## Commandes
+#### Commandes
 
-- `/lire <url>` : Joue l'audio de la vidéo YouTube à l'URL spécifiée.
-- `/clean` : Nettoie le dossier de la playlist. Cette commande nécessite la permission de gérer les messages.
-- `/find <track_name>` : Recherche une vidéo YouTube avec le nom de la piste donné et joue son audio.
-- `/quitter` : Déconnecte le bot du canal vocal.
+- `/lire [url]`: Le bot rejoint votre canal vocal et commence à lire la vidéo YouTube à l'URL donnée.
+- `/find [nom_de_la_piste]`: Le bot recherche le nom de la piste sur YouTube et joue la première correspondance.
+- `/clean`: Supprime tous les fichiers dans le dossier de la playlist. Nécessite des permissions de gestion des messages.
+- `/quitter`: Le bot quitte le canal vocal.
 
-## Note
+##### Note
 
 Ce bot a été conçu à des fins éducatives et n'est pas destiné à un usage commercial.
