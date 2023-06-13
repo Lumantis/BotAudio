@@ -28,7 +28,7 @@ DISCORD_TOKEN=Votre-Token-Discord
 - `/playlist <url>` : Fait lire une playlist de musique par le bot à partir de l'URL de YouTube spécifiée
 - `/quitter` : Fait quitter le canal vocal au bot
 - `/clean` : Nettoie le dossier de la playlist (nécessite des permissions de gestion des messages)
-- `find <track_name>` : Recherche une piste sur YouTube et la met en file d'attente pour être lue
+- `/find <track_name>` : Recherche une piste sur YouTube et la met en file d'attente pour être lue
 
 ##### Note
 
