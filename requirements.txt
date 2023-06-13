@@ -1,0 +1,6 @@
+discord.py[voice]
+yt-dlp
+youtube-search-python
+asyncio
+shutil
+os
