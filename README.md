@@ -1,4 +1,4 @@
-![Cover](https://github.com/Lumantis/BotAudio/blob/main/NikouliMakouli.png =512x424)
+![Cover](https://github.com/Lumantis/BotAudio/blob/main/NikouliMakouli.png)
 
 # Nikouli Makouli Bot
 
