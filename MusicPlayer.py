@@ -84,10 +84,10 @@ class MusicPlayer:
         if self.voice_client:
             if action == 'pause' and self.voice_client.is_playing():
                 self.voice_client.pause()
-                await self.ctx.send('Pause.')
+                await self.ctx.send('Mise en pause de la lecture en cours.')
             elif action == 'resume' and self.voice_client.is_paused():
                 self.voice_client.resume()
-                await self.ctx.send('Reprise.')
+                await self.ctx.send('Reprise de la lecture en cours.')
         else:
             await self.ctx.send('Aucune lecture en cours.')
 
