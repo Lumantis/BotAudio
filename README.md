@@ -1,4 +1,4 @@
-# Bot Audio
+# Nikouli Makouli Bot
 
 Ce bot Discord, écrit en Python, permet aux utilisateurs de lire des vidéos YouTube dans un canal vocal. Il utilise la bibliothèque discord.py ainsi que yt_dlp pour télécharger l'audio des vidéos YouTube.
 
