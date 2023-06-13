@@ -58,6 +58,35 @@ async def lire(ctx, url):
         await ctx.send('Je ne peux pas me connecter au canal vocal.')
 
 @bot.command()
+async def playlist(ctx, url):
+    player = players.get(ctx.guild.id)
+
+    if not player:
+        if not ctx.author.voice:
+            return await ctx.send('Vous devez être dans un canal vocal pour utiliser cette commande.')
+
+        player = MusicPlayer(ctx, ydl_opts)
+        players[ctx.guild.id] = player
+
+    if not player.voice_client:
+        await player.connect_to_voice_channel()
+
+    if player.voice_client:
+        # Extraire les URLs des vidéos de la playlist
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            playlist_info = ydl.extract_info(url, download=False)
+            video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"]]
+
+        # Ajouter chaque vidéo à la file d'attente
+        for video_url in video_urls:
+            await player.add_to_queue(video_url)
+
+        if not player.voice_client.is_playing() and len(player.queue) > 0:
+            await player.play()
+    else:
+        await ctx.send('Je ne peux pas me connecter au canal vocal.')
+
+@bot.command()
 async def clean(ctx):
     if ctx.author.guild_permissions.manage_messages:
         shutil.rmtree('playlist', ignore_errors=True)
