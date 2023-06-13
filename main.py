@@ -30,7 +30,7 @@ players = {}
 
 @bot.event
 async def on_ready():
-    print('Bot is ready!')
+    print('Nikouliiiii Makouliiiiiii')
     # Vérifier si le dossier "playlist" existe, sinon le créer.
     if not os.path.exists('playlist'):
         os.makedirs('playlist')
