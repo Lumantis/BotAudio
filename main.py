@@ -78,18 +78,18 @@ async def playlist(ctx, url):
                 playlist_info = ydl.extract_info(url, download=False)
                 video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"]]
             except yt_dlp.utils.DownloadError:
-                await ctx.send("Impossible d'extraire les informations de la playlist. Vérifiez l'URL et réessayez.")
+                return await ctx.send("Impossible d'extraire les informations de la playlist. Vérifiez l'URL et réessayez.")
 
         # Ajouter chaque vidéo à la file d'attente
         for video_url in video_urls:
-            try:
-                await player.add_to_queue(video_url)
-            except yt_dlp.utils.DownloadError:
-                # En cas d'erreur, passez simplement à la vidéo suivante de la playlist
-                continue
+            await player.add_to_queue(video_url)
 
+        # Si le bot ne joue pas et que la file d'attente n'est pas vide, commencer à jouer
         if not player.voice_client.is_playing() and len(player.queue) > 0:
             await player.play()
+
+        # Envoyer un message lorsque toutes les vidéos de la playlist ont été ajoutées à la file d'attente
+        await ctx.send(f"Toutes les vidéos de la playlist ont été ajoutées à la file d'attente. Il y a maintenant {len(player.queue)} vidéos en file d'attente.")
     else:
         await ctx.send('Je ne peux pas me connecter au canal vocal.')
 
