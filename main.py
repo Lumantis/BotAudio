@@ -72,24 +72,29 @@ async def playlist(ctx, url):
         await player.connect_to_voice_channel()
 
     if player.voice_client:
+        # Les options de yt-dlp, avec 'ignoreerrors' défini sur True
+        ydl_opts_with_ignore_errors = {**ydl_opts, 'ignoreerrors': True}
+
         # Extraire les URLs des vidéos de la playlist
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL(ydl_opts_with_ignore_errors) as ydl:
             try:
                 playlist_info = ydl.extract_info(url, download=False)
-                video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"]]
+                video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"] if video is not None]
             except yt_dlp.utils.DownloadError:
                 return await ctx.send("Impossible d'extraire les informations de la playlist. Vérifiez l'URL et réessayez.")
 
+        added_videos = 0  # Initialiser le compteur de vidéos ajoutées
         # Ajouter chaque vidéo à la file d'attente
         for video_url in video_urls:
             await player.add_to_queue(video_url)
+            added_videos += 1  # Incrémenter le compteur à chaque ajout de vidéo
 
         # Si le bot ne joue pas et que la file d'attente n'est pas vide, commencer à jouer
         if not player.voice_client.is_playing() and len(player.queue) > 0:
             await player.play()
 
         # Envoyer un message lorsque toutes les vidéos de la playlist ont été ajoutées à la file d'attente
-        await ctx.send(f"Toutes les vidéos de la playlist ont été ajoutées à la file d'attente. Il y a maintenant {len(player.queue)} vidéos en file d'attente.")
+        await ctx.send(f"{added_videos} vidéos de la playlist ont été ajoutées à la file d'attente. Il y a maintenant {len(player.queue)} vidéos en file d'attente.")
     else:
         await ctx.send('Je ne peux pas me connecter au canal vocal.')
 
