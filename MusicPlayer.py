@@ -60,7 +60,7 @@ class MusicPlayer:
             self.voice_client = None
 
     async def add_to_queue(self, url):
-        if len(self.queue) < 10:
+        if len(self.queue) < 150:
             self.queue.append(url)
             await self.ctx.send('Votre titre a été mis en file d\'attente.')
         else:
