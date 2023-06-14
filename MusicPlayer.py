@@ -29,20 +29,21 @@ class MusicPlayer:
             if info:
                 # Reset l'événement à chaque nouvelle piste
                 self.track_end.clear()
+                def after_playing(e):
+                    self.ctx.bot.loop.call_soon_threadsafe(self.track_end.set)
+                    if os.path.exists(self.current_file_path):
+                        os.remove(self.current_file_path)
+
                 self.voice_client.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(self.current_file_path)),
-                                       after=lambda e: self.ctx.bot.loop.call_soon_threadsafe(self.track_end.set))
+                                        after=after_playing)
                 await self.ctx.send(f'Lecture en cours : {info["title"]}')
-                
+
                 # Create and send the soundboard view here
                 view = MusicButtonsView(self)
                 await self.ctx.send("Contrôleur de lecture :", view=view)
 
                 # Attend que la piste se termine avant de continuer
                 await self.track_end.wait()
-
-                # Suppression du fichier après la fin de la lecture.
-                if os.path.exists(self.current_file_path):
-                    os.remove(self.current_file_path)
 
             else:
                 self.is_playing = False
