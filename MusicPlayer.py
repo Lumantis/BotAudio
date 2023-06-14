@@ -1,7 +1,6 @@
 import asyncio
 import yt_dlp
 import discord
-import os
 from ui import MusicButtonsView
 
 class MusicPlayer:
@@ -29,22 +28,16 @@ class MusicPlayer:
             if info:
                 # Reset l'événement à chaque nouvelle piste
                 self.track_end.clear()
-                def after_playing(e):
-                    self.ctx.bot.loop.call_soon_threadsafe(self.track_end.set)
-                    if os.path.exists(self.current_file_path):
-                        os.remove(self.current_file_path)
-
                 self.voice_client.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(self.current_file_path)),
-                                        after=after_playing)
+                                       after=lambda e: self.ctx.bot.loop.call_soon_threadsafe(self.track_end.set))
                 await self.ctx.send(f'Lecture en cours : {info["title"]}')
-
+                
                 # Create and send the soundboard view here
                 view = MusicButtonsView(self)
                 await self.ctx.send("Contrôleur de lecture :", view=view)
 
-                # Attend que la piste se termine avant de continuer
+                # Attendez que la piste se termine avant de continuer
                 await self.track_end.wait()
-
             else:
                 self.is_playing = False
                 continue
@@ -61,7 +54,7 @@ class MusicPlayer:
             self.voice_client = None
 
     async def add_to_queue(self, url):
-        if len(self.queue) < 150:
+        if len(self.queue) < 100:
             self.queue.append(url)
             await self.ctx.send('Votre titre a été mis en file d\'attente.')
         else:
@@ -77,18 +70,14 @@ class MusicPlayer:
                     asyncio.run_coroutine_threadsafe(self.ctx.send('La vidéo est trop longue pour être lue.'), self.ctx.bot.loop)
                     return None
 
-                # S'il s'agit d'une playlist, télécharge la première vidéo
-                if 'entries' in info:
-                    info = info['entries'][0]
-
-                info = ydl.extract_info(info['webpage_url'], download=True)
+                info = ydl.extract_info(url, download=True)
                 file_path = ydl.prepare_filename(info)
                 file_path = file_path.rsplit(".", 1)[0] + ".mp3"
                 self.current_file_path = file_path
 
                 return info
         except Exception as e:
-            asyncio.run_coroutine_threadsafe(self.ctx.send(f'Impossible de télécharger la vidéo {url}, une erreur s\'est produite: {str(e)}'), self.ctx.bot.loop)
+            asyncio.run_coroutine_threadsafe(self.ctx.send(f'Une erreur s\'est produite: {str(e)}'), self.ctx.bot.loop)
             return None
 
     async def pause_or_resume(self, action):
