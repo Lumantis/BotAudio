@@ -87,7 +87,7 @@ class MusicPlayer:
 
                 return info
         except Exception as e:
-            asyncio.run_coroutine_threadsafe(self.ctx.send(f'Une erreur s\'est produite: {str(e)}'), self.ctx.bot.loop)
+            asyncio.run_coroutine_threadsafe(self.ctx.send(f'Impossible de télécharger la vidéo {url}, une erreur s\'est produite: {str(e)}'), self.ctx.bot.loop)
             return None
 
     async def pause_or_resume(self, action):
