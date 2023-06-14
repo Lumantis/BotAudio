@@ -91,6 +91,8 @@ async def playlist(ctx, url):
                 video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"] if video is not None]
             except yt_dlp.utils.DownloadError:
                 return await ctx.send("Impossible d'extraire les informations de la playlist. Vérifiez l'URL et réessayez.")
+            except Exception as e:
+                return await ctx.send(f"Une erreur s'est produite lors de l'extraction des informations de la playlist : {str(e)}")
 
         added_videos = 0  # Initialiser le compteur de vidéos ajoutées
         # Ajouter chaque vidéo à la file d'attente
