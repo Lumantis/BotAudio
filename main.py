@@ -30,7 +30,7 @@ players = {}
 
 @bot.event
 async def on_ready():
-    print('Nikouliiiii Makouliiiiiii')
+    print('Bot is ready!')
     # Vérifier si le dossier "playlist" existe, sinon le créer.
     if not os.path.exists('playlist'):
         os.makedirs('playlist')
@@ -56,6 +56,15 @@ async def lire(ctx, url):
             await player.play()
     else:
         await ctx.send('Je ne peux pas me connecter au canal vocal.')
+
+@bot.command()
+async def clean(ctx):
+    if ctx.author.guild_permissions.manage_messages:
+        shutil.rmtree('playlist', ignore_errors=True)
+        os.makedirs('playlist', exist_ok=True)
+        await ctx.send('Le dossier de la playlist a été nettoyé.')
+    else:
+        await ctx.send('Vous devez avoir la permission de gérer les messages pour utiliser cette commande.')
 
 @bot.command()
 async def playlist(ctx, url):
@@ -97,16 +106,7 @@ async def playlist(ctx, url):
         await ctx.send(f"{added_videos} vidéos de la playlist ont été ajoutées à la file d'attente. Il y a maintenant {len(player.queue)} vidéos en file d'attente.")
     else:
         await ctx.send('Je ne peux pas me connecter au canal vocal.')
-
-@bot.command()
-async def clean(ctx):
-    if ctx.author.guild_permissions.manage_messages:
-        shutil.rmtree('playlist', ignore_errors=True)
-        os.makedirs('playlist', exist_ok=True)
-        await ctx.send('Le dossier de la playlist a été nettoyé.')
-    else:
-        await ctx.send('Vous devez avoir la permission de gérer les messages pour utiliser cette commande.')
-        
+       
 @bot.command()
 async def find(ctx, *, track_name):
     youtube_url = search_youtube(track_name)
