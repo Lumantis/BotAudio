@@ -74,12 +74,19 @@ async def playlist(ctx, url):
     if player.voice_client:
         # Extraire les URLs des vidéos de la playlist
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            playlist_info = ydl.extract_info(url, download=False)
-            video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"]]
+            try:
+                playlist_info = ydl.extract_info(url, download=False)
+                video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"]]
+            except yt_dlp.utils.DownloadError:
+                await ctx.send("Impossible d'extraire les informations de la playlist. Vérifiez l'URL et réessayez.")
 
         # Ajouter chaque vidéo à la file d'attente
         for video_url in video_urls:
-            await player.add_to_queue(video_url)
+            try:
+                await player.add_to_queue(video_url)
+            except yt_dlp.utils.DownloadError:
+                # En cas d'erreur, passez simplement à la vidéo suivante de la playlist
+                continue
 
         if not player.voice_client.is_playing() and len(player.queue) > 0:
             await player.play()
