@@ -46,7 +46,7 @@ Version 1.0.2 (15 juin 2023) :
 - Utilisation de la méthode `disconnect()` pour déconnecter le bot du canal vocal dans la classe `MusicPlayer`.
 - Utilisation de l'événement `on_voice_state_update` pour gérer les actions à effectuer lorsque le bot est déconnecté d'un canal vocal.
 - Utilisation de `discord.AutoShardedClient` pour la gestion automatique des sessions shardless.
-- Amélioration de la fonction `add_to_queue` dans la classe `MusicPlayer` pour éviter le spam du canal vocal lors de l'ajout de titres. (encore expérimental)
+- Amélioration de la fonction `add_to_queue` dans la classe `MusicPlayer` pour éviter le spam du canal textuel lors de l'ajout de titres. (encore expérimental)
 
 
 Version 1.0.1 (14 juin 2023) :
