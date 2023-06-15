@@ -28,12 +28,14 @@ ydl_opts = {
 
 players = {}
 
+
 @bot.event
 async def on_ready():
     print('Bot is ready!')
     # Vérifier si le dossier "playlist" existe, sinon le créer.
     if not os.path.exists('playlist'):
         os.makedirs('playlist')
+
 
 @bot.command()
 async def lire(ctx, url):
@@ -57,6 +59,7 @@ async def lire(ctx, url):
     else:
         await ctx.send('Je ne peux pas me connecter au canal vocal.')
 
+
 @bot.command()
 async def clean(ctx):
     if ctx.author.guild_permissions.manage_messages:
@@ -65,6 +68,7 @@ async def clean(ctx):
         await ctx.send('Le dossier de la playlist a été nettoyé.')
     else:
         await ctx.send('Vous devez avoir la permission de gérer les messages pour utiliser cette commande.')
+
 
 @bot.command()
 async def playlist(ctx, url):
@@ -108,7 +112,8 @@ async def playlist(ctx, url):
         await ctx.send(f"{added_videos} vidéos de la playlist ont été ajoutées à la file d'attente. Il y a maintenant {len(player.queue)} vidéos en file d'attente.")
     else:
         await ctx.send('Je ne peux pas me connecter au canal vocal.')
-       
+
+
 @bot.command()
 async def find(ctx, *, track_name):
     youtube_url = search_youtube(track_name)
@@ -116,6 +121,7 @@ async def find(ctx, *, track_name):
         await lire(ctx, youtube_url)
     else:
         await ctx.send("Track not found.")
+
 
 @bot.command()
 async def quitter(ctx):
@@ -127,10 +133,13 @@ async def quitter(ctx):
     else:
         await ctx.send('Je ne suis pas connecté à un canal vocal.')
 
+
 @bot.event
-async def on_disconnect():
-    shutil.rmtree('playlist')
-    os.mkdir('playlist')
+async def on_voice_state_update(member, before, after):
+    if member == bot.user and not after.channel:
+        shutil.rmtree('playlist')
+        os.mkdir('playlist')
+
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
