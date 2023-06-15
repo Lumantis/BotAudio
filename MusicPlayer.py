@@ -31,7 +31,7 @@ class MusicPlayer:
                 self.voice_client.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(self.current_file_path)),
                                        after=lambda e: self.ctx.bot.loop.call_soon_threadsafe(self.track_end.set))
                 await self.ctx.send(f'Lecture en cours : {info["title"]}')
-                
+
                 # Create and send the soundboard view here
                 view = MusicButtonsView(self)
                 await self.ctx.send("Contrôleur de lecture :", view=view)
@@ -50,15 +50,32 @@ class MusicPlayer:
 
     async def disconnect_from_voice_channel(self):
         if self.voice_client:
-            await self.voice_client.disconnect()
+            await self.voice_client.disconnect(force=True)
             self.voice_client = None
 
     async def add_to_queue(self, url):
         if len(self.queue) < 100:
             self.queue.append(url)
-            await self.ctx.send('Votre titre a été mis en file d\'attente.')
         else:
             await self.ctx.send('La file d\'attente est pleine.')
+
+        # Mettre à jour les informations de chaque titre ajouté
+        for i, track_url in enumerate(self.queue[-1::-1], start=1):
+            with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
+                try:
+                    info = ydl.extract_info(track_url, download=False)
+                    track_title = info.get('title', 'Titre inconnu')
+                except Exception:
+                    track_title = 'Titre inconnu'
+
+            await self.ctx.send(f'{i} - "{track_title}" a été mis en file d\'attente.')
+
+        # Mettre à jour le nombre total de titres ajoutés
+        total_added = len(self.queue)
+        if total_added > 1:
+            await self.ctx.send(f'Il y a maintenant {total_added} titres en file d\'attente.')
+        elif total_added == 1:
+            await self.ctx.send('Il y a maintenant 1 titre en file d\'attente.')
 
     def _download(self, url):
         try:
