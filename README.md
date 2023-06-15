@@ -38,7 +38,7 @@ Ce bot a été conçu à des fins éducatives et n'est pas destiné à un usage 
 
 Version 1.0.1 (14 juin 2023) :
 
-- Ajout de la fonctionnalité de gestion de playlist.
+- Ajout de la fonctionnalité de gestion de playlist. (expérimental)
 - Gestion des exceptions lors de l'extraction des informations de la playlist pour éviter les blocages.
 - Ajout de la prise en charge de la dernière version de la bibliothèque yt_dlp.
 - Correction de bugs mineurs et améliorations générales.
