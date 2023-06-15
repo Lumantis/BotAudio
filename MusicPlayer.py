@@ -72,13 +72,11 @@ class MusicPlayer:
 
         # Construire le message de file d'attente
         queue_message = "\n".join(f"{i + 1} - \"{title}\" a été mis en file d'attente." for i, title in enumerate(added_titles[::-1]))
-
-        # Mettre à jour le nombre total de titres ajoutés
         total_added = len(self.queue)
-        if total_added > 1:
+
+        # Mettre à jour le nombre total de titres ajoutés et envoyer le message de file d'attente
+        if total_added > 0:
             await self.ctx.send(f"{queue_message}\nIl y a maintenant {total_added} titres en file d'attente.")
-        elif total_added == 1:
-            await self.ctx.send(f"{queue_message}\nIl y a maintenant 1 titre en file d'attente.")
 
     def _download(self, url):
         try:
