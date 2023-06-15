@@ -60,22 +60,25 @@ class MusicPlayer:
             await self.ctx.send('La file d\'attente est pleine.')
 
         # Mettre à jour les informations de chaque titre ajouté
-        for i, track_url in enumerate(self.queue[-1::-1], start=1):
+        added_titles = []
+        for track_url in self.queue[-1::-1]:
             with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
                 try:
                     info = ydl.extract_info(track_url, download=False)
                     track_title = info.get('title', 'Titre inconnu')
+                    added_titles.append(track_title)
                 except Exception:
-                    track_title = 'Titre inconnu'
+                    added_titles.append('Titre inconnu')
 
-            await self.ctx.send(f'{i} - "{track_title}" a été mis en file d\'attente.')
+        # Construire le message de file d'attente
+        queue_message = "\n".join(f"{i + 1} - \"{title}\" a été mis en file d'attente." for i, title in enumerate(added_titles[::-1]))
 
         # Mettre à jour le nombre total de titres ajoutés
         total_added = len(self.queue)
         if total_added > 1:
-            await self.ctx.send(f'Il y a maintenant {total_added} titres en file d\'attente.')
+            await self.ctx.send(f"{queue_message}\nIl y a maintenant {total_added} titres en file d'attente.")
         elif total_added == 1:
-            await self.ctx.send('Il y a maintenant 1 titre en file d\'attente.')
+            await self.ctx.send(f"{queue_message}\nIl y a maintenant 1 titre en file d'attente.")
 
     def _download(self, url):
         try:
