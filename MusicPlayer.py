@@ -32,11 +32,11 @@ class MusicPlayer:
                                        after=lambda e: self.ctx.bot.loop.call_soon_threadsafe(self.track_end.set))
                 await self.ctx.send(f'Lecture en cours : {info["title"]}')
 
-                # Create and send the soundboard view here
+                # Controleur de lecture
                 view = MusicButtonsView(self)
                 await self.ctx.send("Contrôleur de lecture :", view=view)
 
-                # Attendez que la piste se termine avant de continuer
+                # Attend que la piste se termine avant de continuer
                 await self.track_end.wait()
             else:
                 self.is_playing = False
@@ -59,7 +59,7 @@ class MusicPlayer:
         else:
             await self.ctx.send('La file d\'attente est pleine.')
 
-        # Mettre à jour les informations de chaque titre ajouté
+        # Mets à jour les informations de chaque titre ajouté
         added_titles = []
         for track_url in self.queue[-1::-1]:
             with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
@@ -72,7 +72,7 @@ class MusicPlayer:
 
         total_added = len(self.queue)
 
-        # Mettre à jour le nombre total de titres ajoutés et envoyer le message de file d'attente
+        # Mets à jour le nombre total de titres ajoutés et envoyer le message de file d'attente
         if total_added > 0:
             await self.ctx.send(f"Il y a maintenant {total_added} {'titre' if total_added == 1 else 'titres'} en file d'attente.")
 
