@@ -119,3 +119,12 @@ class MusicPlayer:
                 self.is_playing = False
         else:
             await self.ctx.send('Aucune lecture en cours.')
+
+    async def execute_plugin(self, plugin_name):
+        try:
+            plugin_module = importlib.import_module(f'plugins.{plugin_name}')
+            await plugin_module.run(self.ctx)
+        except ModuleNotFoundError:
+            await self.ctx.send(f"Le plugin '{plugin_name}' n'a pas été trouvé.")
+        except Exception as e:
+            await self.ctx.send(f"Une erreur s'est produite lors de l'exécution du plugin '{plugin_name}': {str(e)}")
