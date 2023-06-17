@@ -21,9 +21,12 @@ class MusicPlayer:
         while len(self.queue) > 0:
             url = self.queue.pop(0)
 
-            # Execute download in background
             loop = asyncio.get_event_loop()
-            info = await loop.run_in_executor(None, self._download, url)
+            try:
+                info = await loop.run_in_executor(None, self._download, url)
+            except Exception as e:
+                await self.ctx.send(f'Une erreur s\'est produite lors du téléchargement de la vidéo: {str(e)}')
+                continue
 
             if info:
                 # Reset l'événement à chaque nouvelle piste
@@ -54,7 +57,7 @@ class MusicPlayer:
             self.voice_client = None
 
     async def add_to_queue(self, url):
-        if len(self.queue) < 100:
+        if len(self.queue) < 50:
             self.queue.append(url)
         else:
             await self.ctx.send('La file d\'attente est pleine.')
