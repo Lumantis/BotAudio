@@ -34,24 +34,32 @@ Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été 
 
 Ce bot a été conçu à des fins éducatives et n'est pas destiné à un usage commercial.
 
-###### Patchnotes :
+# Patch Notes
 
-Version 1.0.2 (15 juin 2023) :
+## Version 1.0.3 (18 juin 2023) :
 
-- Correction d'un bug où le bot ne se connectait pas correctement à un canal vocal lors de l'utilisation de la commande `/lire`.
+- Ajout de blocs `try/except` autour des appels de fonction qui pourraient échouer, comme le téléchargement de vidéos ou l'ajout de vidéos à la file d'attente. Lorsqu'une erreur se produit, un message est envoyé à l'utilisateur pour l'informer de l'erreur.
+- Certaines fonctionnalités ont été déplacées dans des méthodes séparées pour améliorer la modularité du code. Par exemple, la logique pour ajouter une vidéo à la file d'attente a été déplacée dans une méthode séparée `add_to_queue`.
+- Ajout de commentaires afin de rendre le code plus lisible.
+- Le bot se déconnecte maintenant du canal vocal lorsqu'il est fermé pour s'assurer que les ressources sont correctement libérées.
+- Utilisation des plugins pour ajouter des fonctionnalités supplémentaires. Cela permet d'encapsuler des fonctionnalités spécifiques dans des modules séparés.
+- Utilisation des événements pour gérer les interactions avec Discord. Cela permet au bot de réagir de manière plus flexible et dynamique aux actions des utilisateurs.
+
+## Version 1.0.2 (15 juin 2023) :
+
+- Correction d'un bug où le bot ne se connectait pas correctement à un canal vocal lors de l'utilisation de la commande /lire.
 - Amélioration de la gestion des exceptions lors de l'extraction des informations de la playlist.
 - Utilisation de chemins relatifs pour les fichiers afin d'améliorer la portabilité du code.
 - Optimisation de l'utilisation des fonctions asynchrones pour les opérations d'E/S.
-- Ajout de la gestion des exceptions spécifiques lors de la connexion au canal vocal dans la commande `/lire`.
-- Utilisation de la méthode `disconnect()` pour déconnecter le bot du canal vocal dans la classe `MusicPlayer`.
-- Utilisation de l'événement `on_voice_state_update` pour gérer les actions à effectuer lorsque le bot est déconnecté d'un canal vocal.
-- Utilisation de `discord.AutoShardedClient` pour la gestion automatique des sessions shardless.
-- Amélioration de la fonction `add_to_queue` dans la classe `MusicPlayer` pour éviter le spam du canal textuel lors de l'ajout de titres. (encore expérimental)
+- Ajout de la gestion des exceptions spécifiques lors de la connexion au canal vocal dans la commande /lire.
+- Utilisation de la méthode disconnect() pour déconnecter le bot du canal vocal dans la classe MusicPlayer.
+- Utilisation de l'événement on_voice_state_update pour gérer les actions à effectuer lorsque le bot est déconnecté d'un canal vocal.
+- Utilisation de discord.AutoShardedClient pour la gestion automatique des sessions shardless.
+- Amélioration de la fonction add_to_queue dans la classe MusicPlayer pour éviter le spam du canal textuel lors de l'ajout de titres. (encore expérimental)
 
+## Version 1.0.1 (14 juin 2023) :
 
-Version 1.0.1 (14 juin 2023) :
-
-- Ajout de la fonctionnalité de gestion de playlist : `/playlist + url` (expérimental)
+- Ajout de la fonctionnalité de gestion de playlist : /playlist + url (expérimental)
 - Gestion des exceptions lors de l'extraction des informations de la playlist pour éviter les blocages.
-- Ajout de la prise en charge de la dernière version de la bibliothèque `yt_dlp`.
+- Ajout de la prise en charge de la dernière version de la bibliothèque yt_dlp.
 - Correction de bugs mineurs et améliorations générales.
