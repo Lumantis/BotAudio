@@ -1,3 +1,3 @@
 async def run(ctx):
-    # Logique de votre plugin ici
+    # Logique du plugin ici
     await ctx.send('Mon plugin fonctionne !')
