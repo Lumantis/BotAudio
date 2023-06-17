@@ -52,7 +52,11 @@ async def lire(ctx, url):
         await player.connect_to_voice_channel()
 
     if player.voice_client:
-        await player.add_to_queue(url)
+        try:
+            await player.add_to_queue(url)
+        except Exception as e:
+            await ctx.send(f'Une erreur s\'est produite: {str(e)}')
+            return
 
         if not player.voice_client.is_playing() and len(player.queue) > 0:
             await player.play()
@@ -100,8 +104,11 @@ async def playlist(ctx, url):
         added_videos = 0  # Initialiser le compteur de vidéos ajoutées
         # Ajouter chaque vidéo à la file d'attente
         for video_url in video_urls:
-            await player.add_to_queue(video_url)
-            added_videos += 1  # Incrémenter le compteur à chaque ajout de vidéo
+            try:
+                await player.add_to_queue(video_url)
+                added_videos += 1  # Incrémenter le compteur à chaque ajout de vidéo
+            except Exception as e:
+                await ctx.send(f'Une erreur s\'est produite lors de l\'ajout de la vidéo à la file d\'attente: {str(e)}')
 
         # Si le bot ne joue pas et que la file d'attente n'est pas vide, commencer à jouer
         if not player.voice_client.is_playing() and len(player.queue) > 0:
