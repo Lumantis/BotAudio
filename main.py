@@ -3,6 +3,8 @@ import os
 import shutil
 import discord
 import yt_dlp
+import importlib
+import glob
 from dotenv import load_dotenv
 from discord.ext import commands
 from MusicPlayer import MusicPlayer
@@ -32,9 +34,9 @@ players = {}
 @bot.event
 async def on_ready():
     print('Bot is ready!')
-    # Vérifier si le dossier "playlist" existe, sinon le créer.
-    if not os.path.exists('playlist'):
-        os.makedirs('playlist')
+    # Vérifier et créer les dossiers "playlist" et "plugins" si nécessaire.
+    os.makedirs('playlist', exist_ok=True)
+    os.makedirs('plugins', exist_ok=True)
 
 
 @bot.command()
@@ -145,6 +147,13 @@ async def on_voice_state_update(member, before, after):
     if member == bot.user and not after.channel:
         shutil.rmtree('playlist')
         os.mkdir('playlist')
+
+
+# Charger les plugins
+plugin_files = glob.glob('plugins/*.py')
+for plugin_file in plugin_files:
+    plugin_name = plugin_file.replace('plugins/', '').replace('.py', '')
+    importlib.import_module(f'plugins.{plugin_name}')
 
 
 load_dotenv()
