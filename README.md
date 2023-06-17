@@ -42,7 +42,7 @@ Ce bot a été conçu à des fins éducatives et n'est pas destiné à un usage 
 - Certaines fonctionnalités ont été déplacées dans des méthodes séparées pour améliorer la modularité du code. Par exemple, la logique pour ajouter une vidéo à la file d'attente a été déplacée dans une méthode séparée `add_to_queue`.
 - Ajout de commentaires afin de rendre le code plus lisible.
 - Le bot se déconnecte maintenant du canal vocal lorsqu'il est fermé pour s'assurer que les ressources sont correctement libérées.
-- Utilisation des plugins pour ajouter des fonctionnalités supplémentaires. Cela permet d'encapsuler des fonctionnalités spécifiques dans des modules séparés.
+- Utilisation des plugins pour ajouter des fonctionnalités supplémentaires. Cela permet d'encapsuler des fonctionnalités spécifiques dans des modules séparés. (experimental)
 - Utilisation des événements pour gérer les interactions avec Discord. Cela permet au bot de réagir de manière plus flexible et dynamique aux actions des utilisateurs.
 - Mise à jour du nombre maximal de titres pouvant être ajoutés à la liste d'attente. (100 => 50)
 
