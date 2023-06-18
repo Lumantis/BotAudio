@@ -3,13 +3,13 @@ import os
 import shutil
 import discord
 import yt_dlp
-import importlib
-import glob
 from dotenv import load_dotenv
 from discord.ext import commands
 from MusicPlayer import MusicPlayer
 from ui import MusicButtonsView
 from youtube_utils import search_youtube
+from glob import glob
+from os.path import basename, splitext
 
 intents = discord.Intents.all()
 intents.members = True
@@ -30,14 +30,23 @@ ydl_opts = {
 
 players = {}
 
-
 @bot.event
 async def on_ready():
     print('Bot is ready!')
     # Vérifier et créer les dossiers "playlist" et "plugins" si nécessaire.
     os.makedirs('playlist', exist_ok=True)
-    os.makedirs('plugins', exist_ok=True)
+    if USE_PLUGINS: 
+        os.makedirs('plugins', exist_ok=True)
+        load_plugins()
 
+# Fonction pour charger les plugins
+def load_plugins():
+    files = glob('./plugins/*.py')
+    for file in files:
+        module_name = splitext(basename(file))[0]  # Obtient le nom du fichier sans son extension
+        plugin = __import__(f"plugins.{module_name}")
+        bot.add_cog(plugin.Plugin(bot))
+        
 
 @bot.command()
 async def lire(ctx, url):
@@ -149,14 +158,8 @@ async def on_voice_state_update(member, before, after):
         os.mkdir('playlist')
 
 
-# Charger les plugins
-plugin_files = glob.glob('plugins/*.py')
-for plugin_file in plugin_files:
-    plugin_name = plugin_file.replace('plugins/', '').replace('.py', '')
-    importlib.import_module(f'plugins.{plugin_name}')
-
-
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+USE_PLUGINS = os.getenv('PLUGINS').lower() in ['true', '1', 'yes']
 
 bot.run(TOKEN)
