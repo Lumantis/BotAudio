@@ -34,6 +34,7 @@ players = {}
 
 
 def load_plugins(bot):
+    tasks = []  # Liste pour stocker les tâches asynchrones
     for filename in glob_module.glob("plugins/*.py"):
         spec = importlib.util.spec_from_file_location("plugins", filename)
         plugin = importlib.util.module_from_spec(spec)
@@ -44,9 +45,10 @@ def load_plugins(bot):
             continue
         try:
             if hasattr(plugin, "setup"):
-                plugin.setup(bot)
+                tasks.append(bot.loop.create_task(plugin.setup(bot)))  # Utilisez bot.loop.create_task() pour exécuter la fonction setup en tant que tâche asynchrone
         except Exception as e:
             print(f'Erreur lors de l\'exécution du setup du plugin "{filename}": {str(e)}')
+    return tasks  # Retourne la liste des tâches asynchrones
 
 
 @bot.event
@@ -56,7 +58,7 @@ async def on_ready():
     os.makedirs('playlist', exist_ok=True)
     if 'PLUGINS' in os.environ and os.environ['PLUGINS'].lower() in ['true', '1', 'yes']:
         os.makedirs('plugins', exist_ok=True)
-        load_plugins(bot)
+        await asyncio.gather(*load_plugins(bot))  # Utilisez asyncio.gather() pour exécuter les tâches asynchrones
 
 
 @bot.command()
@@ -117,11 +119,14 @@ async def playlist(ctx, url):
         with yt_dlp.YoutubeDL(ydl_opts_with_ignore_errors) as ydl:
             try:
                 playlist_info = ydl.extract_info(url, download=False)
-                video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"] if video is not None]
+                video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"] if
+                              video is not None]
             except yt_dlp.utils.DownloadError:
-                return await ctx.send("Impossible d'extraire les informations de la playlist. Vérifiez l'URL et réessayez.")
+                return await ctx.send(
+                    "Impossible d'extraire les informations de la playlist. Vérifiez l'URL et réessayez.")
             except Exception as e:
-                return await ctx.send(f"Une erreur s'est produite lors de l'extraction des informations de la playlist : {str(e)}")
+                return await ctx.send(
+                    f"Une erreur s'est produite lors de l'extraction des informations de la playlist : {str(e)}")
 
         added_videos = 0  # Initialiser le compteur de vidéos ajoutées
         # Ajouter chaque vidéo à la file d'attente
@@ -137,7 +142,8 @@ async def playlist(ctx, url):
             await player.play()
 
         # Envoie un message lorsque toutes les vidéos de la playlist ont été ajoutées à la file d'attente
-        await ctx.send(f"{added_videos} vidéos de la playlist ont été ajoutées à la file d'attente. Il y a maintenant {len(player.queue)} vidéos en file d'attente.")
+        await ctx.send(
+            f"{added_videos} vidéos de la playlist ont été ajoutées à la file d'attente. Il y a maintenant {len(player.queue)} vidéos en file d'attente.")
     else:
         await ctx.send('Je ne peux pas me connecter au canal vocal.')
 
@@ -172,4 +178,7 @@ async def on_voice_state_update(member, before, after):
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot.run(TOKEN)
+async def run():
+    await bot.start(TOKEN)
+
+asyncio.run(run())
