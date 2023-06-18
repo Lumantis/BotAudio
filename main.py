@@ -4,13 +4,14 @@ import shutil
 import discord
 import yt_dlp
 import importlib.util
+import glob as glob_module
 from dotenv import load_dotenv
 from discord.ext import commands
 from MusicPlayer import MusicPlayer
 from ui import MusicButtonsView
 from youtube_utils import search_youtube
-from glob import glob
 from os.path import basename, splitext
+
 
 intents = discord.Intents.all()
 intents.members = True
@@ -31,26 +32,32 @@ ydl_opts = {
 
 players = {}
 
+
+def load_plugins(bot):
+    for filename in glob_module.glob("plugins/*.py"):
+        spec = importlib.util.spec_from_file_location("plugins", filename)
+        plugin = importlib.util.module_from_spec(spec)
+        try:
+            spec.loader.exec_module(plugin)
+        except Exception as e:
+            print(f'Erreur lors de l\'exécution du plugin "{filename}": {str(e)}')
+            continue
+        try:
+            if hasattr(plugin, "setup"):
+                plugin.setup(bot)
+        except Exception as e:
+            print(f'Erreur lors de l\'exécution du setup du plugin "{filename}": {str(e)}')
+
+
 @bot.event
 async def on_ready():
     print('Bot is ready!')
     # Vérifier et créer les dossiers "playlist" et "plugins" si nécessaire.
     os.makedirs('playlist', exist_ok=True)
-    if USE_PLUGINS: 
+    if 'PLUGINS' in os.environ and os.environ['PLUGINS'].lower() in ['true', '1', 'yes']:
         os.makedirs('plugins', exist_ok=True)
-        load_plugins()
+        load_plugins(bot)
 
-# Fonction pour charger les plugins
-def load_plugins(bot):
-    for filename in glob.glob("plugins/*.py"):
-        spec = importlib.util.spec_from_file_location("plugins", filename)
-        plugin = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(plugin)
-        try:
-            plugin.setup(bot)
-        except AttributeError:
-            print(f'Le plugin "{filename}" n\'a pas de fonction setup')
-        
 
 @bot.command()
 async def lire(ctx, url):
@@ -164,6 +171,5 @@ async def on_voice_state_update(member, before, after):
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-USE_PLUGINS = os.getenv('PLUGINS').lower() in ['true', '1', 'yes']
 
 bot.run(TOKEN)

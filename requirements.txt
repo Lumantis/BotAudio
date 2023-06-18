@@ -3,7 +3,6 @@ yt-dlp
 youtube-search-python
 asyncio
 shutil
-os
 python-dotenv
 importlib
 glob

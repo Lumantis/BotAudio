@@ -1,7 +1,10 @@
-from discord import ui, ButtonStyle, Interaction, Button
+import discord
+from discord import ButtonStyle, Interaction
+from discord.ext import commands
+from discord.ui import View, Button
 from discord.errors import HTTPException
 
-class PauseResumeButton(ui.Button['PauseResumeButton']):
+class PauseResumeButton(Button['PauseResumeButton']):
     def __init__(self, player):
         super().__init__(style=ButtonStyle.secondary, emoji="⏸️", label="Pause/Lecture", custom_id="pause_resume")
         self.player = player
@@ -24,7 +27,7 @@ class PauseResumeButton(ui.Button['PauseResumeButton']):
             await interaction.response.send_message('Je ne suis pas connecté à un canal vocal.', ephemeral=True)
 
 
-class SkipButton(ui.Button['SkipButton']):
+class SkipButton(Button['SkipButton']):
     def __init__(self, player):
         super().__init__(style=ButtonStyle.primary, emoji="⏭️", label="Passer", custom_id="skip")
         self.player = player
@@ -39,7 +42,8 @@ class SkipButton(ui.Button['SkipButton']):
         else:
             await interaction.response.send_message('Je ne suis pas connecté à un canal vocal.', ephemeral=True)
 
-class MusicButtonsView(ui.View):
+
+class MusicButtonsView(View):
     def __init__(self, player):
         super().__init__()
         self.add_item(PauseResumeButton(player))
