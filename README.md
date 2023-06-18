@@ -32,21 +32,17 @@ Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été 
 - `/find <track_name>` : Recherche une piste sur YouTube et la met en file d'attente pour être lue
 
 
-## Patch Notes
+###### Patchnotes
 
-##### Version 1.0.4 (18 juin 2023) :
+Version 1.0.4 (18 juin 2023) :
 
-- Ajout d'une gestion de plugins pour le bot. Vous pouvez maintenant activer et désactiver l'utilisation des plugins en modifiant la valeur de la variable d'environnement PLUGINS dans le fichier .env.
-- Modification de la structure du code pour séparer la logique des plugins du reste du code.
-- Ajout de la fonction `load_plugins` qui charge tous les plugins situés dans le dossier plugins si l'utilisation des plugins est activée.
-- Modification de la structure du dossier : un nouveau dossier plugins a été créé pour stocker les plugins. Le bot vérifiera et créera ce dossier au démarrage si l'utilisation des plugins est activée.
-- Modification de la méthode `on_ready` : le bot vérifie et crée maintenant les dossiers playlist et plugins au démarrage.
-- Suppression du bloc de code initial de chargement des plugins et remplacement par l'appel à la fonction `load_plugins`.
-- Modification du fichier `.env` pour inclure la nouvelle variable d'environnement PLUGINS. Vous pouvez la définir sur True ou False pour activer ou désactiver l'utilisation des plugins.
-- Refonte du système de gestion des fichiers de plugins pour utiliser un format plus propre et plus efficace. Chaque plugin est maintenant dans son propre fichier dans le dossier plugins, ce qui permet une organisation et une maintenance plus faciles.
-- Ajout d'une nouvelle structure pour les plugins, qui leur permet de se définir comme une sous-classe de `commands.Cog`, facilitant ainsi leur intégration avec le bot.
+- Ajout de la fonctionnalité d'activation et de désactivation des plugins via le fichier `.env`.
+- Suppression de l'importation statique des plugins et ajout d'un système dynamique pour charger les plugins en fonction de la configuration.
+- Ajout d'un plugin pour supprimer tous les messages dans un canal textuel à l'aide de la commande `/net`.
+- Amélioration des boutons de contrôle de la musique en ajoutant un contrôle pour éviter l'usage de boutons quand il n'y a pas de musique en cours.
+- Modification de l'affichage des boutons de contrôle de la musique pour utiliser des emojis au lieu de texte. (expérimental)
 
-##### Version 1.0.3 (17 juin 2023) :
+Version 1.0.3 (17 juin 2023) :
 
 - Ajout de blocs `try/except` autour des appels de fonction qui pourraient échouer, comme le téléchargement de vidéos ou l'ajout de vidéos à la file d'attente. Lorsqu'une erreur se produit, un message est envoyé à l'utilisateur pour l'informer de l'erreur.
 - Certaines fonctionnalités ont été déplacées dans des méthodes séparées pour améliorer la modularité du code. Par exemple, la logique pour ajouter une vidéo à la file d'attente a été déplacée dans une méthode séparée `add_to_queue`.
@@ -56,7 +52,7 @@ Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été 
 - Utilisation des événements pour gérer les interactions avec Discord. Cela permet au bot de réagir de manière plus flexible et dynamique aux actions des utilisateurs.
 - Mise à jour du nombre maximal de titres pouvant être ajoutés à la liste d'attente. (100 => 50)
 
-##### Version 1.0.2 (15 juin 2023) :
+Version 1.0.2 (15 juin 2023) :
 
 - Correction d'un bug où le bot ne se connectait pas correctement à un canal vocal lors de l'utilisation de la commande `/lire`.
 - Amélioration de la gestion des exceptions lors de l'extraction des informations de la playlist.
@@ -68,7 +64,7 @@ Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été 
 - Utilisation de `discord.AutoShardedClient` pour la gestion automatique des sessions shardless.
 - Amélioration de la fonction `add_to_queue` dans la classe `MusicPlayer` pour éviter le spam du canal textuel lors de l'ajout de titres. (encore expérimental)
 
-##### Version 1.0.1 (14 juin 2023) :
+Version 1.0.1 (14 juin 2023) :
 
 - Ajout de la fonctionnalité de gestion de playlist : `/playlist + url` (expérimental)
 - Gestion des exceptions lors de l'extraction des informations de la playlist pour éviter les blocages.
