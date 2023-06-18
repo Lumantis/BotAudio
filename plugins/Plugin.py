@@ -4,9 +4,6 @@ class Plugin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # Insérer ici la logique de votre plugin
-    # Par exemple, une commande "calculer" pourrait ressembler à ceci :
-
     @commands.command()
     async def calculer(self, ctx, *, equation):
         try:
