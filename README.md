@@ -21,6 +21,7 @@ Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été 
 ### Exemple de fichier `.env`
 
 `DISCORD_TOKEN=Votre-Token-Discord`
+`PLUGINS=True`
 
 ## Commandes
 
