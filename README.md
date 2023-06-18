@@ -42,6 +42,7 @@ Version 1.0.4 (18 juin 2023) :
 - Amélioration des boutons de contrôle de la musique en ajoutant un contrôle pour éviter l'usage de boutons quand il n'y a pas de musique en cours.
 - Modification de l'affichage des boutons de contrôle de la musique pour utiliser des emojis au lieu de texte. (expérimental)
 
+
 Version 1.0.3 (17 juin 2023) :
 
 - Ajout de blocs `try/except` autour des appels de fonction qui pourraient échouer, comme le téléchargement de vidéos ou l'ajout de vidéos à la file d'attente. Lorsqu'une erreur se produit, un message est envoyé à l'utilisateur pour l'informer de l'erreur.
@@ -51,6 +52,7 @@ Version 1.0.3 (17 juin 2023) :
 - Utilisation des plugins pour ajouter des fonctionnalités supplémentaires. Cela permet d'encapsuler des fonctionnalités spécifiques dans des modules séparés. (experimental)
 - Utilisation des événements pour gérer les interactions avec Discord. Cela permet au bot de réagir de manière plus flexible et dynamique aux actions des utilisateurs.
 - Mise à jour du nombre maximal de titres pouvant être ajoutés à la liste d'attente. (100 => 50)
+
 
 Version 1.0.2 (15 juin 2023) :
 
@@ -63,6 +65,7 @@ Version 1.0.2 (15 juin 2023) :
 - Utilisation de l'événement `on_voice_state_update` pour gérer les actions à effectuer lorsque le bot est déconnecté d'un canal vocal.
 - Utilisation de `discord.AutoShardedClient` pour la gestion automatique des sessions shardless.
 - Amélioration de la fonction `add_to_queue` dans la classe `MusicPlayer` pour éviter le spam du canal textuel lors de l'ajout de titres. (encore expérimental)
+
 
 Version 1.0.1 (14 juin 2023) :
 
