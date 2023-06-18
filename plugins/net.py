@@ -8,6 +8,9 @@ class Net(commands.Cog):
     @commands.command(name='net')
     @commands.has_permissions(manage_messages=True)  # Seuls les utilisateurs avec la permission de gérer les messages peuvent utiliser cette commande
     async def net(self, ctx):
+        await self.clear_channel(ctx)
+
+    async def clear_channel(self, ctx):
         await ctx.channel.purge(limit=None)
 
 def setup(bot):
