@@ -36,7 +36,19 @@ Ce bot a été conçu à des fins éducatives et n'est pas destiné à un usage 
 
 # Patch Notes
 
-## Version 1.0.3 (18 juin 2023) :
+## Version 1.0.4 (18 juin 2023) :
+
+- Ajout d'une gestion de plugins pour le bot. Vous pouvez maintenant activer et désactiver l'utilisation des plugins en modifiant la valeur de la variable d'environnement PLUGINS dans le fichier .env.
+- Modification de la structure du code pour séparer la logique des plugins du reste du code.
+- Ajout de la fonction `load_plugins` qui charge tous les plugins situés dans le dossier plugins si l'utilisation des plugins est activée.
+- Modification de la structure du dossier : un nouveau dossier plugins a été créé pour stocker les plugins. Le bot vérifiera et créera ce dossier au démarrage si l'utilisation des plugins est activée.
+- Modification de la méthode `on_ready` : le bot vérifie et crée maintenant les dossiers playlist et plugins au démarrage.
+- Suppression du bloc de code initial de chargement des plugins et remplacement par l'appel à la fonction `load_plugins`.
+- Modification du fichier `.env` pour inclure la nouvelle variable d'environnement PLUGINS. Vous pouvez la définir sur True ou False pour activer ou désactiver l'utilisation des plugins.
+- Refonte du système de gestion des fichiers de plugins pour utiliser un format plus propre et plus efficace. Chaque plugin est maintenant dans son propre fichier dans le dossier plugins, ce qui permet une organisation et une maintenance plus faciles.
+- Ajout d'une nouvelle structure pour les plugins, qui leur permet de se définir comme une sous-classe de `commands.Cog`, facilitant ainsi leur intégration avec le bot.
+
+## Version 1.0.3 (17 juin 2023) :
 
 - Ajout de blocs `try/except` autour des appels de fonction qui pourraient échouer, comme le téléchargement de vidéos ou l'ajout de vidéos à la file d'attente. Lorsqu'une erreur se produit, un message est envoyé à l'utilisateur pour l'informer de l'erreur.
 - Certaines fonctionnalités ont été déplacées dans des méthodes séparées pour améliorer la modularité du code. Par exemple, la logique pour ajouter une vidéo à la file d'attente a été déplacée dans une méthode séparée `add_to_queue`.
