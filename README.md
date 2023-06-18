@@ -31,7 +31,7 @@ Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été 
 - `/find <track_name>` : Recherche une piste sur YouTube et la met en file d'attente pour être lue
 
 
-##### Patch Notes
+## Patch Notes
 
 ##### Version 1.0.4 (18 juin 2023) :
 
