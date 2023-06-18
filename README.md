@@ -30,6 +30,7 @@ Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été 
 - `/quitter` : Fait quitter le canal vocal au bot
 - `/clean` : Nettoie le dossier de la playlist (nécessite des permissions de gestion des messages)
 - `/find <track_name>` : Recherche une piste sur YouTube et la met en file d'attente pour être lue
+- `/net` : supprime tous les messages textuels du chat dans lequel la commande a été envoyée. (plugin - nécessite des permissions de gestion des messages)
 
 
 ###### Patchnotes
