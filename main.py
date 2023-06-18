@@ -3,6 +3,7 @@ import os
 import shutil
 import discord
 import yt_dlp
+import importlib.util
 from dotenv import load_dotenv
 from discord.ext import commands
 from MusicPlayer import MusicPlayer
@@ -40,12 +41,15 @@ async def on_ready():
         load_plugins()
 
 # Fonction pour charger les plugins
-def load_plugins():
-    files = glob('./plugins/*.py')
-    for file in files:
-        module_name = splitext(basename(file))[0]  # Obtient le nom du fichier sans son extension
-        plugin = __import__(f"plugins.{module_name}")
-        bot.add_cog(plugin.Plugin(bot))
+def load_plugins(bot):
+    for filename in glob.glob("plugins/*.py"):
+        spec = importlib.util.spec_from_file_location("plugins", filename)
+        plugin = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(plugin)
+        try:
+            plugin.setup(bot)
+        except AttributeError:
+            print(f'Le plugin "{filename}" n\'a pas de fonction setup')
         
 
 @bot.command()
