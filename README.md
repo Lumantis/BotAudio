@@ -38,9 +38,7 @@ Ce bot a été conçu à des fins éducatives et n'est pas destiné à un usage 
 
 Version 1.0.3 (22 juin 2023) :
 
-- Correction de la définition des options yt-dlp : Les options pour yt-dlp ont été corrigées et déplacées dans le constructeur de la classe MusicPlayer.
 - Optimisation de la gestion de la file d'attente : Le téléchargement de la chanson suivante est désormais effectué pendant que la chanson actuelle est en train de jouer, afin de réduire le délai de lecture.
-- Ajout de la fonction de recherche YouTube : Intégration de la fonction search_youtube qui utilise l'API de YouTube pour rechercher des vidéos à partir d'une chaîne de caractères plutôt que d'exiger un URL exact.
 - Modification des options yt-dlp : Les options ont été modifiées pour télécharger directement le fichier audio au format MP3, ce qui réduit le temps de traitement et l'utilisation du CPU.
 - Ajout de la gestion des erreurs de téléchargement : En cas d'échec du téléchargement, un message est renvoyé.
 - Correction de bugs mineurs et améliorations générales.
