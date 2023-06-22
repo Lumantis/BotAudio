@@ -34,32 +34,33 @@ Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été 
 
 Ce bot a été conçu à des fins éducatives et n'est pas destiné à un usage commercial.
 
-###### Patchnotes :
+<details>
+  <summary>Patchnotes</summary>
+  
+  ###### Version 1.0.3 (22 juin 2023) :
 
-Version 1.0.3 (22 juin 2023) :
+  - Optimisation de la gestion de la file d'attente : Le téléchargement de la chanson suivante est désormais effectué pendant que la chanson actuelle est en train de jouer, afin de réduire le délai de lecture.
+  - Modification des options yt-dlp : Les options ont été modifiées pour télécharger directement le fichier audio au format MP3, ce qui réduit le temps de traitement et l'utilisation du CPU.
+  - Ajout de la gestion des erreurs de téléchargement : En cas d'échec du téléchargement, un message est renvoyé.
+  - Correction de bugs mineurs et améliorations générales.
+  
+  ###### Version 1.0.2 (15 juin 2023) :
 
-- Optimisation de la gestion de la file d'attente : Le téléchargement de la chanson suivante est désormais effectué pendant que la chanson actuelle est en train de jouer, afin de réduire le délai de lecture.
-- Modification des options yt-dlp : Les options ont été modifiées pour télécharger directement le fichier audio au format MP3, ce qui réduit le temps de traitement et l'utilisation du CPU.
-- Ajout de la gestion des erreurs de téléchargement : En cas d'échec du téléchargement, un message est renvoyé.
-- Correction de bugs mineurs et améliorations générales.
+  - Correction d'un bug où le bot ne se connectait pas correctement à un canal vocal lors de l'utilisation de la commande `/lire`.
+  - Amélioration de la gestion des exceptions lors de l'extraction des informations de la playlist.
+  - Utilisation de chemins relatifs pour les fichiers afin d'améliorer la portabilité du code.
+  - Optimisation de l'utilisation des fonctions asynchrones pour les opérations d'E/S.
+  - Ajout de la gestion des exceptions spécifiques lors de la connexion au canal vocal dans la commande `/lire`.
+  - Utilisation de la méthode `disconnect()` pour déconnecter le bot du canal vocal dans la classe `MusicPlayer`.
+  - Utilisation de l'événement `on_voice_state_update` pour gérer les actions à effectuer lorsque le bot est déconnecté d'un canal vocal.
+  - Utilisation de `discord.AutoShardedClient` pour la gestion automatique des sessions shardless.
+  - Amélioration de la fonction `add_to_queue` dans la classe `MusicPlayer` pour éviter le spam du canal textuel lors de l'ajout de titres. (encore expérimental)
+  
+  ###### Version 1.0.1 (14 juin 2023) :
 
+  - Ajout de la fonctionnalité de gestion de playlist : `/playlist + url` (expérimental)
+  - Gestion des exceptions lors de l'extraction des informations de la playlist pour éviter les blocages.
+  - Ajout de la prise en charge de la dernière version de la bibliothèque `yt_dlp`.
+  - Correction de bugs mineurs et améliorations générales.
 
-Version 1.0.2 (15 juin 2023) :
-
-- Correction d'un bug où le bot ne se connectait pas correctement à un canal vocal lors de l'utilisation de la commande `/lire`.
-- Amélioration de la gestion des exceptions lors de l'extraction des informations de la playlist.
-- Utilisation de chemins relatifs pour les fichiers afin d'améliorer la portabilité du code.
-- Optimisation de l'utilisation des fonctions asynchrones pour les opérations d'E/S.
-- Ajout de la gestion des exceptions spécifiques lors de la connexion au canal vocal dans la commande `/lire`.
-- Utilisation de la méthode `disconnect()` pour déconnecter le bot du canal vocal dans la classe `MusicPlayer`.
-- Utilisation de l'événement `on_voice_state_update` pour gérer les actions à effectuer lorsque le bot est déconnecté d'un canal vocal.
-- Utilisation de `discord.AutoShardedClient` pour la gestion automatique des sessions shardless.
-- Amélioration de la fonction `add_to_queue` dans la classe `MusicPlayer` pour éviter le spam du canal textuel lors de l'ajout de titres. (encore expérimental)
-
-
-Version 1.0.1 (14 juin 2023) :
-
-- Ajout de la fonctionnalité de gestion de playlist : `/playlist + url` (expérimental)
-- Gestion des exceptions lors de l'extraction des informations de la playlist pour éviter les blocages.
-- Ajout de la prise en charge de la dernière version de la bibliothèque `yt_dlp`.
-- Correction de bugs mineurs et améliorations générales.
+</details>
