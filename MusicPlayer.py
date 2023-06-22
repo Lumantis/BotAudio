@@ -13,6 +13,17 @@ class MusicPlayer:
         self.is_playing = False
         self.track_end = asyncio.Event()
 
+
+    async def predownload_next(self):
+        if len(self.queue) < 2:  # Si il n'y a pas de titre suivant, pas de pré-téléchargement.
+            return
+        next_url = self.queue[1]  # On considère le titre suivant.
+        
+        # Exécute le téléchargement en arrière-plan.
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(None, self._download, next_url)
+
+
     async def play(self):
         if self.is_playing:
             return
@@ -21,31 +32,32 @@ class MusicPlayer:
         while len(self.queue) > 0:
             url = self.queue.pop(0)
 
+            # Exécute le téléchargement en arrière-plan.
             loop = asyncio.get_event_loop()
-            try:
-                info = await loop.run_in_executor(None, self._download, url)
-            except Exception as e:
-                await self.ctx.send(f'Une erreur s\'est produite lors du téléchargement de la vidéo: {str(e)}')
-                continue
+            info = await loop.run_in_executor(None, self._download, url)
 
             if info:
-                # Reset l'événement à chaque nouvelle piste
+                # Reset l'événement à chaque nouvelle piste.
                 self.track_end.clear()
                 self.voice_client.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(self.current_file_path)),
                                        after=lambda e: self.ctx.bot.loop.call_soon_threadsafe(self.track_end.set))
                 await self.ctx.send(f'Lecture en cours : {info["title"]}')
 
-                # Controleur de lecture
+                # Contrôleur de lecture.
                 view = MusicButtonsView(self)
                 await self.ctx.send("Contrôleur de lecture :", view=view)
 
-                # Attend que la piste se termine avant de continuer
+                # Pré-téléchargement du titre suivant.
+                await self.predownload_next()
+
+                # Attend que la piste se termine avant de continuer.
                 await self.track_end.wait()
             else:
                 self.is_playing = False
                 continue
 
         self.is_playing = False
+
 
     async def connect_to_voice_channel(self):
         if self.ctx.author.voice:
@@ -57,27 +69,17 @@ class MusicPlayer:
             self.voice_client = None
 
     async def add_to_queue(self, url):
-        if len(self.queue) < 50:
+        if len(self.queue) < 100:
             self.queue.append(url)
         else:
             await self.ctx.send('La file d\'attente est pleine.')
 
-        # Mets à jour les informations de chaque titre ajouté
-        added_titles = []
-        for track_url in self.queue[-1::-1]:
-            with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
-                try:
-                    info = ydl.extract_info(track_url, download=False)
-                    track_title = info.get('title', 'Titre inconnu')
-                    added_titles.append(track_title)
-                except Exception:
-                    added_titles.append('Titre inconnu')
-
         total_added = len(self.queue)
 
         # Mets à jour le nombre total de titres ajoutés et envoyer le message de file d'attente
-        if total_added > 0:
+        if total_added % 5 == 0:  # Changez 5 en n'importe quel nombre que vous préférez.
             await self.ctx.send(f"Il y a maintenant {total_added} {'titre' if total_added == 1 else 'titres'} en file d'attente.")
+
 
     def _download(self, url):
         try:
@@ -119,12 +121,3 @@ class MusicPlayer:
                 self.is_playing = False
         else:
             await self.ctx.send('Aucune lecture en cours.')
-
-    async def execute_plugin(self, plugin_name):
-        try:
-            plugin_module = importlib.import_module(f'plugins.{plugin_name}')
-            await plugin_module.run(self.ctx)
-        except ModuleNotFoundError:
-            await self.ctx.send(f"Le plugin '{plugin_name}' n'a pas été trouvé.")
-        except Exception as e:
-            await self.ctx.send(f"Une erreur s'est produite lors de l'exécution du plugin '{plugin_name}': {str(e)}")

@@ -3,15 +3,11 @@ import os
 import shutil
 import discord
 import yt_dlp
-import importlib.util
-import glob as glob_module
 from dotenv import load_dotenv
 from discord.ext import commands
 from MusicPlayer import MusicPlayer
 from ui import MusicButtonsView
 from youtube_utils import search_youtube
-from os.path import basename, splitext
-
 
 intents = discord.Intents.all()
 intents.members = True
@@ -19,46 +15,25 @@ intents.message_content = True
 intents.voice_states = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
+players = {}
 
 ydl_opts = {
     'format': 'bestaudio/best',
-    'outtmpl': 'playlist/%(title)s.%(ext)s',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
         'preferredquality': '192',
-    }]
+    }],
+    'outtmpl': 'playlist/%(title)s.%(ext)s',
 }
-
-players = {}
-
-
-def load_plugins(bot):
-    for filename in glob_module.glob("plugins/*.py"):
-        spec = importlib.util.spec_from_file_location("plugins", filename)
-        plugin = importlib.util.module_from_spec(spec)
-        try:
-            spec.loader.exec_module(plugin)
-        except Exception as e:
-            print(f'Erreur lors de l\'exécution du plugin "{filename}": {str(e)}')
-            continue
-        try:
-            if hasattr(plugin, "setup"):
-                plugin.setup(bot)
-        except Exception as e:
-            print(f'Erreur lors de l\'exécution du setup du plugin "{filename}": {str(e)}')
 
 
 @bot.event
 async def on_ready():
     print('Bot is ready!')
-    # Vérifier et créer les dossiers "playlist" et "plugins" si nécessaire.
-    os.makedirs('playlist', exist_ok=True)
-    if 'PLUGINS' in os.environ and os.environ['PLUGINS'].lower() in ['true', '1', 'yes']:
-        os.makedirs('plugins', exist_ok=True)
-        load_plugins(bot)  # Charge les plugins
-
-    await bot.start(TOKEN)
+    # Vérifier si le dossier "playlist" existe, sinon le créer.
+    if not os.path.exists('playlist'):
+        os.makedirs('playlist')
 
 
 @bot.command()
@@ -76,11 +51,7 @@ async def lire(ctx, url):
         await player.connect_to_voice_channel()
 
     if player.voice_client:
-        try:
-            await player.add_to_queue(url)
-        except Exception as e:
-            await ctx.send(f'Une erreur s\'est produite: {str(e)}')
-            return
+        await player.add_to_queue(url)
 
         if not player.voice_client.is_playing() and len(player.queue) > 0:
             await player.play()
@@ -115,31 +86,28 @@ async def playlist(ctx, url):
     if player.voice_client:
         ydl_opts_with_ignore_errors = {**ydl_opts, 'ignoreerrors': True}
 
+        # Extraction des URLs des vidéos de la playlist
         with yt_dlp.YoutubeDL(ydl_opts_with_ignore_errors) as ydl:
             try:
                 playlist_info = ydl.extract_info(url, download=False)
-                video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"] if
-                              video is not None]
+                video_urls = [f"https://www.youtube.com/watch?v={video['id']}" for video in playlist_info["entries"] if video is not None]
             except yt_dlp.utils.DownloadError:
-                return await ctx.send(
-                    "Impossible d'extraire les informations de la playlist. Vérifiez l'URL et réessayez.")
+                return await ctx.send("Impossible d'extraire les informations de la playlist. Vérifiez l'URL et réessayez.")
             except Exception as e:
-                return await ctx.send(
-                    f"Une erreur s'est produite lors de l'extraction des informations de la playlist : {str(e)}")
+                return await ctx.send(f"Une erreur s'est produite lors de l'extraction des informations de la playlist : {str(e)}")
 
-        added_videos = 0
+        added_videos = 0  # Initialiser le compteur de vidéos ajoutées
+        # Ajouter chaque vidéo à la file d'attente
         for video_url in video_urls:
-            try:
-                await player.add_to_queue(video_url)
-                added_videos += 1
-            except Exception as e:
-                await ctx.send(f'Une erreur s\'est produite lors de l\'ajout de la vidéo à la file d\'attente: {str(e)}')
+            await player.add_to_queue(video_url)
+            added_videos += 1  # Incrémenter le compteur à chaque ajout de vidéo
 
+        # Si le bot ne joue pas et que la file d'attente n'est pas vide, commencer à jouer
         if not player.voice_client.is_playing() and len(player.queue) > 0:
             await player.play()
 
-        await ctx.send(
-            f"{added_videos} vidéos de la playlist ont été ajoutées à la file d'attente. Il y a maintenant {len(player.queue)} vidéos en file d'attente.")
+        # Envoie un message lorsque toutes les vidéos de la playlist ont été ajoutées à la file d'attente
+        await ctx.send(f"{added_videos} vidéos de la playlist ont été ajoutées à la file d'attente. Il y a maintenant {len(player.queue)} vidéos en file d'attente.")
     else:
         await ctx.send('Je ne peux pas me connecter au canal vocal.')
 
@@ -174,7 +142,4 @@ async def on_voice_state_update(member, before, after):
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-async def run():
-    await bot.start(TOKEN)
-
-asyncio.run(run())
+bot.run(TOKEN)
