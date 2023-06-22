@@ -42,6 +42,7 @@ Un bot Discord qui permet de lire de la musique provenant de YouTube sur un chan
   - `/quitter` : Fait quitter le canal vocal au bot
   - `/clean` : Nettoie le dossier de la playlist (nécessite des permissions de gestion des messages)
   - `/find <track_name>` : Recherche une piste sur YouTube et la met en file d'attente pour être lue
+  - `/net` : permet de nettoyer un salon textuel. (nécéssite des permissions de gestion de messages)
 
 </details>
 
@@ -55,6 +56,7 @@ Un bot Discord qui permet de lire de la musique provenant de YouTube sur un chan
   - Modification des options yt-dlp : Les options ont été modifiées pour télécharger directement le fichier audio au format MP3, ce qui réduit le temps de traitement et l'utilisation du CPU.
   - Ajout de la gestion des erreurs de téléchargement : En cas d'échec du téléchargement, un message est renvoyé.
   - Correction de bugs mineurs et améliorations générales.
+  - Ajout de la commande `/net` permettant de nettoyer les messages d'un serveur textuel discord.
   
   </details>
 
