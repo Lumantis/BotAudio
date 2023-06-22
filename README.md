@@ -2,37 +2,45 @@
 
 # Nikouli Makouli Audio Bot
 
-Un bot Discord qui peut lire de la musique provenant de YouTube. Ce bot a été développé en Python en utilisant la bibliothèque discord.py.
+Un bot Discord qui permet de lire de la musique provenant de YouTube sur un chan vocal.
 
-## Caractéristiques
+<details>
+  <summary>Caractéristiques</summary>
 
-- Rejoindre et quitter des canaux vocaux
-- Lire de la musique à partir de YouTube
-- Mettre en pause, reprendre et passer des pistes
-- Télécharger et lire des playlists YouTube
+  - Rejoindre et quitter des canaux vocaux
+  - Lire de la musique à partir de YouTube
+  - Mettre en pause, reprendre et passer des pistes
+  - Télécharger et lire des playlists YouTube
 
-## Instructions d'installation
+</details>
 
-1. Clonez ce dépôt
-2. Installez les dépendances en exécutant `pip install -r requirements.txt`
-3. Configurez vos variables d'environnement dans un fichier `.env` (voir exemple ci-dessous)
-4. Lancez le bot avec `python main.py`
+<details>
+  <summary>Instructions d'installation</summary>
 
-### Exemple de fichier `.env`
+  1. Clonez ce dépôt
+  2. Installez les dépendances en exécutant `pip install -r requirements.txt`
+  3. Configurez vos variables d'environnement dans un fichier `.env` (voir exemple ci-dessous)
+  4. Lancez le bot avec `python main.py`
 
-`DISCORD_TOKEN=Votre-Token-Discord`
+</details>
 
-## Commandes
+<details>
+  <summary>Exemple de fichier `.env`</summary>
 
-- `/lire <url>` : Fait lire une piste de musique par le bot à partir de l'URL de YouTube spécifiée
-- `/playlist <url>` : Fait lire une playlist de musique par le bot à partir de l'URL de YouTube spécifiée
-- `/quitter` : Fait quitter le canal vocal au bot
-- `/clean` : Nettoie le dossier de la playlist (nécessite des permissions de gestion des messages)
-- `/find <track_name>` : Recherche une piste sur YouTube et la met en file d'attente pour être lue
+  `DISCORD_TOKEN=Votre-Token-Discord`
 
-##### Note
+</details>
 
-Ce bot a été conçu à des fins éducatives et n'est pas destiné à un usage commercial.
+<details>
+  <summary>Commandes</summary>
+
+  - `/lire <url>` : Fait lire une piste de musique par le bot à partir de l'URL de YouTube spécifiée
+  - `/playlist <url>` : Fait lire une playlist de musique par le bot à partir de l'URL de YouTube spécifiée
+  - `/quitter` : Fait quitter le canal vocal au bot
+  - `/clean` : Nettoie le dossier de la playlist (nécessite des permissions de gestion des messages)
+  - `/find <track_name>` : Recherche une piste sur YouTube et la met en file d'attente pour être lue
+
+</details>
 
 <details>
   <summary>Patchnotes</summary>
