@@ -1,4 +1,4 @@
-![Cover](https://github.com/Lumantis/BotAudio/blob/bugged-do-not_use-master/NikouliMakouli.png)
+![Cover](https://github.com/Lumantis/BotAudio/blob/bugged-do-not-use-master/NikouliMakouli.png)
 
 # Nikouli Makouli Audio Bot
 
