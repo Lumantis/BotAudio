@@ -5,7 +5,7 @@
 Un bot Discord qui permet de lire de la musique provenant de YouTube sur un chan vocal.
 
 <details>
-  <summary>Caractéristiques</summary>
+  <summary><b>Caractéristiques</b></summary>
 
   - Rejoindre et quitter des canaux vocaux
   - Lire de la musique à partir de YouTube
