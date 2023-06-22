@@ -1,21 +1,29 @@
-import asyncio
 import os
 import shutil
 import discord
 import yt_dlp
+import warnings
 from dotenv import load_dotenv
 from discord.ext import commands
 from MusicPlayer import MusicPlayer
 from ui import MusicButtonsView
 from youtube_utils import search_youtube
 
+
+warnings.simplefilter("ignore", RuntimeWarning)
+
+
 intents = discord.Intents.all()
 intents.members = True
 intents.message_content = True
 intents.voice_states = True
 
+
 bot = commands.Bot(command_prefix='/', intents=intents)
+
+
 players = {}
+
 
 ydl_opts = {
     'format': 'bestaudio/best',
@@ -139,7 +147,16 @@ async def on_voice_state_update(member, before, after):
         os.mkdir('playlist')
 
 
+# Provisoire
+@bot.command()
+@commands.has_permissions(manage_messages=True)
+async def net(ctx):
+    """Purge all messages in the channel"""
+    await ctx.channel.purge()
+    
+    
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+
 
 bot.run(TOKEN)

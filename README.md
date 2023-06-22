@@ -71,8 +71,6 @@ Un bot Discord qui permet de lire de la musique provenant de YouTube sur un chan
   - Utilisation de `discord.AutoShardedClient` pour la gestion automatique des sessions shardless.
   - Amélioration de la fonction `add_to_queue` dans la classe `MusicPlayer` pour éviter le spam du canal textuel lors de l'ajout de titres. (encore expérimental)
 
- </details> 
-  
  <details> 
   <summary><i>Version 1.0.1 (14 juin 2023) :</i></summary>
 
