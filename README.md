@@ -19,7 +19,7 @@ Le Nikouli Makouli Audio Bot est un bot Discord qui permet de lire de la musique
 ## Exemple de fichier `.env`
 ```env
 DISCORD_TOKEN=Votre-Token-Discord
-
+```
 ## Commandes
 /lire <url> : Fait lire une piste de musique par le bot à partir de l'URL de YouTube spécifiée
 /find <track_name> : Recherche une piste sur YouTube et la met en file d'attente pour être lue
@@ -37,7 +37,6 @@ DISCORD_TOKEN=Votre-Token-Discord
 - Ajout de la commande /twitch <lien du live> permettant la lecture d'une vidéo twitch en mode radio sur un channel vocal discord.
 - Optimisation du code.
   </details>
- <details> 
 <details> 
   <summary><i>Version 1.0.4 (23 juin 2023) :</i></summary>
 - Optimisation de la gestion de la file d'attente : Le téléchargement de la chanson suivante est désormais effectué pendant que la chanson actuelle est en train de jouer, afin de réduire le délai de lecture.
