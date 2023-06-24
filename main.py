@@ -3,6 +3,7 @@ import shutil
 import discord
 import yt_dlp
 import warnings
+import streamlink
 from dotenv import load_dotenv
 from discord.ext import commands
 from MusicPlayer import MusicPlayer
@@ -153,7 +154,33 @@ async def on_voice_state_update(member, before, after):
 async def net(ctx):
     """Purge all messages in the channel"""
     await ctx.channel.purge()
-    
+
+
+@bot.command()
+async def twitch(ctx, url):
+    player = players.get(ctx.guild.id)
+
+    if not player:
+        if not ctx.author.voice:
+            return await ctx.send('Vous devez être dans un canal vocal pour utiliser cette commande.')
+
+        player = MusicPlayer(ctx, ydl_opts)
+        players[ctx.guild.id] = player
+
+    if not player.voice_client:
+        await player.connect_to_voice_channel()
+
+    if player.voice_client:
+        streams = streamlink.streams(url)
+
+        if "best" in streams:
+            stream_url = streams["best"].url
+            player.voice_client.play(discord.FFmpegPCMAudio(stream_url), after=lambda e: print('Stream terminé', e))
+        else:
+            await ctx.send('Je ne peux pas me connecter à la diffusion en direct de Twitch.')
+    else:
+        await ctx.send('Je ne peux pas me connecter au canal vocal.')
+        
     
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
